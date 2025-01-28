@@ -1,0 +1,39 @@
+name: AnswerQuestion
+description: Answer question based on the provided sources.
+template: |
+  <message role="system">
+      You are an intelligent assistant helping Contoso Inc employees with their employee handbook questions.
+      Use 'you' to refer to the individual asking the questions even if they ask with 'I'.
+      Answer the following question using only the information below.
+      For tabular information return it as an html table. Do not return markdown format.
+      
+      If you cannot answer using the sources below, say you don't know.
+  </message>
+
+  {{#each sources}}
+    <message role="user">
+        {{text}}
+    </message>
+  {{/each}}
+
+  <message role="user">
+      Question: {{input}}
+  </message>
+
+template_format: handlebars
+# Allow calling getText on the sources
+prompt_template_options: [ ALLOW_CONTEXT_VARIABLE_METHOD_CALLS_UNSAFE ]
+input_variables:
+  - name: input
+    description: Question to answer
+    is_required: true
+  - name: sources
+    description: Information used to answer the question
+    is_required: true
+execution_settings:
+  default:
+    max_tokens: 1024
+    temperature: 0.2
+    top_p: 1
+    presence_penalty: 0.0
+    frequency_penalty: 0.0

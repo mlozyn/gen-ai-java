@@ -1,0 +1,116 @@
+[
+  {
+    "name": "embedding: embed w/o persistence",
+    "given": {
+      "request": {
+        "endpoint": "/embedding/v1/embed",
+        "method": "POST",
+        "body": {
+          "text": "text1",
+          "clientType": "lc-open-ai"
+        }
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "text": "text1",
+        "dimensions" : 3,
+        "vector": [
+          1.0,
+          2.0,
+          3.0
+        ]
+      }
+    }
+  },
+  {
+    "name": "embedding: embed with persistence",
+    "given": {
+      "request": {
+        "endpoint": "/embedding/v1/embed?persist=true",
+        "method": "POST",
+        "body": {
+          "text": "text2",
+          "clientType": "lc-open-ai"
+        }
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "id": "956c8efa-d808-4756-9488-9e2d1cd7221d",
+        "text": "text2",
+        "dimensions" : 3,
+        "vector": [
+          3.0,
+          2.0,
+          1.0
+        ]
+      }
+    }
+  },
+  {
+    "name": "embedding: search",
+    "given": {
+      "request": {
+        "endpoint": "/embedding/v1/search",
+        "method": "POST",
+        "body": {
+          "limit": 5,
+          "scoreThreshold": "0.8",
+          "query": "text1",
+          "clientType": "lc-open-ai"
+        }
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "text": "search-text1",
+            "score": "0.81"
+          },
+          {
+            "text": "search-text2",
+            "score": "0.92"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "embedding: score",
+    "given": {
+      "request": {
+        "endpoint": "/embedding/v1/score",
+        "method": "POST",
+        "body": {
+          "query": "text1",
+          "documents": [
+            "document1",
+            "document2"
+          ],
+          "clientType": "lc-open-ai"
+        }
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "query": "text1",
+        "documents": [
+          {
+            "text": "document1",
+            "score": "1.00"
+          },
+          {
+            "text": "document2",
+            "score": "0.99"
+          }
+        ]
+      }
+    }
+  }
+]

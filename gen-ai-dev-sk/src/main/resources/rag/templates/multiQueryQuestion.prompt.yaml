@@ -1,0 +1,36 @@
+name: MultiQueryQuestion
+description: Generate different versions of a provided user question.
+template: |
+  
+  <message role="system">
+    Generate {{versions_number}} different versions of a provided user question. 
+    Each version should be worded differently, using synonyms or alternative sentence structures, 
+    but they should all retain the original meaning. 
+  
+    These versions will be used to retrieve relevant documents from a vector database.
+    By generating multiple perspectives on the user question, your goal is to help 
+    the user overcome some of the limitations of the distance-based similarity search.
+    
+    It is very important to provide each query version on a separate line, without enumerations, 
+    hyphens, or any additional formatting!"
+  </message>
+
+  <message role="user">
+      Question: {{input}}
+  </message>
+
+template_format: handlebars
+input_variables:
+  - name: versions_number
+    description: Number of different versions of a provided user query
+    is_required: true
+  - name: input
+    description: Question to answer
+    is_required: true
+execution_settings:
+  default:
+    max_tokens: 1024
+    temperature: 0.4
+    top_p: 1
+    presence_penalty: 0.0
+    frequency_penalty: 0.0

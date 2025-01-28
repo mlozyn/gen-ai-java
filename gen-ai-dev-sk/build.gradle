@@ -1,0 +1,79 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+
+    id 'jacoco'
+}
+
+group = 'com.ml.training'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    // spring
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // semantic kernel
+    implementation(platform("com.microsoft.semantic-kernel:semantickernel-bom:${sk_version}"))
+    implementation 'com.microsoft.semantic-kernel:semantickernel-api'
+    implementation 'com.microsoft.semantic-kernel:semantickernel-experimental'
+    implementation 'com.microsoft.semantic-kernel:semantickernel-settings-loader:0.2.13-alpha'
+
+    implementation 'com.microsoft.semantic-kernel:semantickernel-aiservices-openai'
+
+    // internal
+    implementation 'com.ml.training:gen-ai-dev-core:1.0.0'
+
+    // common
+    implementation 'org.apache.commons:commons-collections4:4.4'
+
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}
+
+jar {
+    enabled = false
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']
+    }
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("reports/jacoco/html")
+    }
+}

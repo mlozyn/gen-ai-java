@@ -1,0 +1,59 @@
+[
+  {
+    "name": "sentiment: positive sentiment",
+    "given": {
+      "request": {
+        "endpoint": "/sentiment/v1",
+        "method": "POST",
+        "body": {
+          "input": "I am happy to see you again!",
+          "clientType": "lc-open-ai"
+        }
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "output": "positive"
+      }
+    }
+  },
+  {
+    "name": "sentiment: neutral sentiment",
+    "given": {
+      "request": {
+        "endpoint": "/sentiment/v1",
+        "method": "POST",
+        "body": {
+          "input": "The queue was long, and the service could have been better",
+          "clientType": "lc-open-ai"
+        }
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "output": "neutral"
+      }
+    }
+  },
+  {
+    "name": "sentiment: negative sentiment",
+    "given": {
+      "request": {
+        "endpoint": "/sentiment/v1",
+        "method": "POST",
+        "body": {
+          "input": "The package arrived late, and the contents were damaged",
+          "clientType": "lc-open-ai"
+        }
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "output": "negative"
+      }
+    }
+  }
+]

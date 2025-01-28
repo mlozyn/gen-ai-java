@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: "gen-ai-dev-sk"
+  threads:
+    virtual:
+      enabled: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  profiles:
+    active: local
+
+server:
+  port: 8080
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+database:
+  qdrant:
+    enabled: true
+    host: "localhost"
+    port: 6334
+    dimensions: 1536
+
+client:
+  azure-openai:
+    key: "${AZURE_OPEN_AI_KEY}"
+    endpoint: "${AZURE_OPEN_AI_ENDPOINT}"
+    chat:
+      model-name: "gpt-4-0613"
+      #    model-name: "amazon.titan-tg1-large"
+      #    model-name: "anthropic.claude-instant-v1"
+      #    model-name: "anthropic.claude-v3-opus"
+      #    model-name: "chat-bison@001"
+      #    model-name: "Llama-3-8B-Instruct"
+      temperature: 0.5
+    embedding:
+      model-name: "text-embedding-ada-002"
+      #   model-name: "text-embedding-3-large-1"

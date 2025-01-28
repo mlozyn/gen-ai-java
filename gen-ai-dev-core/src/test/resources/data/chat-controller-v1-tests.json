@@ -1,0 +1,96 @@
+[
+  {
+    "name": "chat: create new",
+    "given": {
+      "request": {
+        "endpoint": "/chat/v1",
+        "method": "POST",
+        "body": {
+          "name": "first chat",
+          "clientType": "lc-open-ai",
+          "systemMessage": "some system message"
+        }
+      }
+    },
+    "expected": {
+      "status": 201,
+      "body": {
+        "id": 1,
+        "name": "first chat",
+        "clientType": "lc-open-ai",
+        "systemMessage": "some system message",
+        "createdAt": "2025-01-27T20:56:59.456Z"
+      }
+    }
+  },
+  {
+    "name": "chat: get by id - existing",
+    "given": {
+      "request": {
+        "endpoint": "/chat/v1/1",
+        "method": "GET"
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "id": 1,
+        "name": "first chat",
+        "clientType": "lc-open-ai",
+        "systemMessage": "some system message",
+        "createdAt": "2025-01-27T20:56:59.456Z"
+      }
+    }
+  },
+  {
+    "name": "chat: ask",
+    "given": {
+      "request": {
+        "endpoint": "/chat/v1/1/ask",
+        "method": "POST",
+        "body": {
+          "input": "simple question",
+          "settings": {
+            "temperature": 0.8
+          }
+        }
+      }
+    },
+    "expected": {
+      "status": 200,
+      "body": {
+        "output": "simple answer"
+      }
+    }
+  },
+  {
+    "name": "chat: delete",
+    "given": {
+      "request": {
+        "endpoint": "/chat/v1/1",
+        "method": "DELETE"
+      }
+    },
+    "expected": {
+      "status": 204
+    }
+  },
+  {
+    "name": "chat: get by id - after delete",
+    "given": {
+      "request": {
+        "endpoint": "/chat/v1/1",
+        "method": "GET"
+      }
+    },
+    "expected": {
+      "status": 404,
+      "body": {
+        "title": "Not found",
+        "detail": "Chat with id '1' does not exist",
+        "error": "Not Found",
+        "timestamp": "2025-01-27T20:56:59.456Z"
+      }
+    }
+  }
+]
