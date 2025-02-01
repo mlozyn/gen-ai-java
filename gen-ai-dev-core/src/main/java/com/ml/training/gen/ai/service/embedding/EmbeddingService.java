@@ -20,4 +20,6 @@ public interface EmbeddingService {
 
   TextVector save(final String text);
 
+  List<TextVector> save(final List<String> source);
+
 }

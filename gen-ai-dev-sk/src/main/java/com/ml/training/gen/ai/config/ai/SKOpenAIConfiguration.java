@@ -35,7 +35,7 @@ import com.ml.training.gen.ai.service.prompt.impl.sk.repository.ChatHistoryRepos
 import com.ml.training.gen.ai.service.rag.content.RAGContentService;
 import com.ml.training.gen.ai.service.rag.content.RAGFusionContentService;
 import com.ml.training.gen.ai.service.rag.indexer.DocumentIndexer;
-import com.ml.training.gen.ai.service.rag.indexer.SemanticKernelDocumentIndexer;
+import com.ml.training.gen.ai.service.rag.indexer.pdf.PDFDocumentIndexer;
 import com.ml.training.gen.ai.service.rag.prompt.SemanticKernelRAGPromptService;
 import com.ml.training.gen.ai.utils.JsonUtils;
 import java.util.List;
@@ -74,7 +74,7 @@ public class SKOpenAIConfiguration {
   @Bean
   public DocumentIndexer skOpenAIDocumentIndexer(
       @NonNull @Qualifier("skOpenAIEmbeddingService") final EmbeddingService embeddingService) {
-    return new SemanticKernelDocumentIndexer(embeddingService);
+    return new PDFDocumentIndexer(embeddingService);
   }
 
   @Bean

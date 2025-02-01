@@ -11,6 +11,7 @@ import io.qdrant.client.QueryFactory;
 import io.qdrant.client.grpc.Collections.Distance;
 import io.qdrant.client.grpc.Collections.VectorParams;
 import io.qdrant.client.grpc.Points.QueryPoints;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +25,8 @@ import org.springframework.util.CollectionUtils;
 public class EmbeddingQdrantRepository implements EmbeddingRepository {
 
   private static final Logger LOG = LoggerFactory.getLogger(EmbeddingQdrantRepository.class);
+
+  private static final int BATCH_SIZE = 10;
 
   private final String collectionName;
   private final Integer dimensions;
@@ -100,11 +103,23 @@ public class EmbeddingQdrantRepository implements EmbeddingRepository {
       return List.of();
     }
 
-    final var result = source.stream()
-        .map(this::createEntity)
-        .toList();
+    final List<TextEntity> result = new LinkedList<>();
 
-    upsert(result);
+    final int batchCount = (source.size() + BATCH_SIZE - 1) / BATCH_SIZE;
+    for (int index = 0; index < batchCount; index++) {
+      final var batch = source.subList(
+          index * BATCH_SIZE,
+          Math.min((index + 1) * BATCH_SIZE, source.size())
+      );
+
+      final var entities = batch.stream()
+          .map(this::createEntity)
+          .toList();
+
+      upsert(entities);
+
+      result.addAll(entities);
+    }
 
     return result;
   }

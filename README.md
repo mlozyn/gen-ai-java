@@ -16,14 +16,14 @@ Each project is divided into the following modules:
 
 ### 2. Embeddings / Similarity Search
 - **Source Code:**
-    - Functionality: `service/similarity`
-    - Test Client: `test/*/SimilarityApiClient`
+    - Functionality: `service/embedding`
+    - Test Client: `test/*/EmbeddingApiClient`
 - **Description:**
   This module demonstrates how to generate embeddings (vector representations) for provided words or phrases and perform contextual similarity searches. The system can find sentences similar to a user-provided question.
 
 ### 3. Function Execution
 - **Source Code:**
-    - Functionality: `service/prompt/lc/tool`, `service/prompt/sk/plugin`
+    - Functionality: `service/prompt/tool`, `service/prompt/plugin`
     - Test Client: `test/*/ChatApiClient`
 - **Description:**
   This module illustrates how LLMs can execute functions by invoking available tools, which can range from web searches to external API calls or specific code executions. A simple chatbot for an Italian pizzeria was implemented to demonstrate this functionality. LangChain4J is highlighted for its stability and robustness compared to SemanticKernel.

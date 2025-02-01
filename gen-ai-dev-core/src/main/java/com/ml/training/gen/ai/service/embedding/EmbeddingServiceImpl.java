@@ -110,6 +110,22 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     );
   }
 
+  public List<TextVector> save(@NonNull final List<String> source) {
+    if (CollectionUtils.isEmpty(source)) {
+      return List.of();
+    }
+
+    final var entities = source.stream()
+        .map(text -> mapper.toEntity(embed(text)))
+        .toList();
+
+    final var result = repository.save(entities);
+
+    return result.stream()
+        .map(mapper::fromEntity)
+        .toList();
+  }
+
   private double getCosineSimilarity(final List<Float> vec1, final List<Float> vec2) {
     double dotProduct = 0.0;
     double norm1 = 0.0;

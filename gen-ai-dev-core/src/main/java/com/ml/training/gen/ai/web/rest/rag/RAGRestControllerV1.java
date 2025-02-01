@@ -14,9 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
@@ -24,8 +22,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Validated
 @RestController
@@ -49,18 +49,14 @@ public class RAGRestControllerV1 {
     this.mapper = mapper;
   }
 
-  @PostMapping("/init")
+  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   @Operation(tags = "RAG", summary = "Source documents indexing", responses = {
       @ApiResponse(responseCode = "200")
   })
   @ResponseStatus(HttpStatus.OK)
-  public void initialize() throws IOException {
-    final DocumentIndexer indexer = getIndexer(ClientType.SK_OPEN_AI);
-    final var resource = new ClassPathResource(DOCUMENT_RESOURCE_FILE_PATH);
-
-    try (final InputStream source = resource.getInputStream()) {
-      indexer.execute(source);
-    }
+  public void upload(@RequestParam("file") final MultipartFile file) throws IOException {
+    final DocumentIndexer indexer = getIndexer();
+    indexer.execute(file.getInputStream());
   }
 
   @PostMapping("/ask")
@@ -88,13 +84,10 @@ public class RAGRestControllerV1 {
         );
   }
 
-  private DocumentIndexer getIndexer(final ClientType clientType) {
+  private DocumentIndexer getIndexer() {
     return indexers.stream()
-        .filter(service -> service.supports(clientType))
         .findAny()
-        .orElseThrow(() -> new UnsupportedClientType(
-            String.format("Client type '%s' is not supported by Document indexer", clientType))
-        );
+        .orElseThrow(() -> new UnsupportedClientType("Document indexer has not been registered"));
   }
 
 }

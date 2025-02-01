@@ -30,23 +30,33 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+    implementation 'com.github.spotbugs:spotbugs-annotations:4.8.6'
+
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // semantic kernel
-    implementation(platform("com.microsoft.semantic-kernel:semantickernel-bom:${sk_version}"))
-    implementation 'com.microsoft.semantic-kernel:semantickernel-api'
-    implementation 'com.microsoft.semantic-kernel:semantickernel-experimental'
-    implementation 'com.microsoft.semantic-kernel:semantickernel-settings-loader:0.2.13-alpha'
+    // langchain4j
+    implementation(platform("dev.langchain4j:langchain4j-bom:${langchain_version}"))
+    implementation 'dev.langchain4j:langchain4j'
+    implementation 'dev.langchain4j:langchain4j-open-ai'
 
-    implementation 'com.microsoft.semantic-kernel:semantickernel-aiservices-openai'
-    implementation 'com.azure:azure-ai-openai:1.0.0-beta.12'
+    implementation 'dev.langchain4j:langchain4j-document-parser-apache-pdfbox'
+
+    implementation 'dev.langchain4j:langchain4j-azure-open-ai'
+    implementation 'dev.langchain4j:langchain4j-hugging-face'
+
+    // built in embedding model
+    implementation 'dev.langchain4j:langchain4j-embeddings-all-minilm-l6-v2'
+
+    implementation 'com.azure:azure-ai-openai:1.0.0-beta.11'
 
     // internal
     implementation 'com.ml.training:gen-ai-dev-core:1.0.0'
 
     // common
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
     implementation 'org.apache.commons:commons-collections4:4.4'
 
     // test

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: "gen-ai-dev-sk"
+    name: "gen-ai-dev-lc"
   threads:
     virtual:
       enabled: true
@@ -15,7 +15,7 @@ spring:
     active: local
 
 server:
-  port: 8080
+  port: 8090
 
 ---
 spring:
@@ -45,3 +45,10 @@ client:
     embedding:
       model-name: "text-embedding-ada-002"
       #   model-name: "text-embedding-3-large-1"
+  hugging-face:
+    key: "${HF_API_KEY}"
+    chat:
+      model-name: "Qwen/Qwen2.5-1.5B-Instruct"
+      temperature: 0.5
+    embedding:
+      model-name: "sentence-transformers/all-MiniLM-L6-v2"

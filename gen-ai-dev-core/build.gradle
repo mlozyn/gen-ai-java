@@ -58,6 +58,9 @@ dependencies {
 
     implementation 'com.google.protobuf:protobuf-java:4.29.3'
 
+    // pdf box - document indexing
+    implementation 'org.apache.pdfbox:pdfbox:3.0.4'
+
     // common
     implementation 'org.apache.commons:commons-collections4:4.4'
 
