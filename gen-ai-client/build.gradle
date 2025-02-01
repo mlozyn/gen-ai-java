@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.ml.training'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    // spring
+    implementation 'org.springframework:spring-web:6.2.2'
+
+    // logging
+    implementation "org.slf4j:slf4j-api:${slf4j_version}"
+
+    // lombok
+    compileOnly "org.projectlombok:lombok:${lombok_version}"
+    annotationProcessor "org.projectlombok:lombok:${lombok_version}"
+
+    // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+    implementation 'com.github.spotbugs:spotbugs-annotations:4.8.6'
+
+    // internal
+    implementation 'com.ml.training:gen-ai-dev-core:1.0.0'
+
+    // common
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+
+    // test
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += ['-Xlint:unchecked', '-Xlint:deprecation']
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

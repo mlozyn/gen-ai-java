@@ -33,8 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "RAG", description = "RAG API")
 public class RAGRestControllerV1 {
 
-  private static final String DOCUMENT_RESOURCE_FILE_PATH = "rag/data/role-library.pdf";
-
   private final List<DocumentIndexer> indexers;
   private final List<RAGPromptService> promptServices;
 
@@ -49,7 +47,7 @@ public class RAGRestControllerV1 {
     this.mapper = mapper;
   }
 
-  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Operation(tags = "RAG", summary = "Source documents indexing", responses = {
       @ApiResponse(responseCode = "200")
   })
